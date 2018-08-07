@@ -25,4 +25,6 @@ if(altura <= 0 || altura >= 3.00) {
 if(pesoEhValido && alturaEhValida) {
    var imc = peso / ( altura * altura);
    tdImc.textContent = imc;
+} else {
+    tdImc.textContent = "Altura e/ou peso inválidos!"
 }
