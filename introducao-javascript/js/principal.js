@@ -1,29 +1,63 @@
 var titulo = document.querySelector(".titulo");
 titulo.textContent = "Aparecida Nutricionista";
-var trPaciente = document.querySelector('#primeiro-paciente');
-var tdPeso = trPaciente.querySelector('.info-peso');
-var tdAltura = trPaciente.querySelector('.info-altura');
-var tdImc = trPaciente.querySelector('.info-imc');
 
-var peso = tdPeso.textContent;
-var altura = tdAltura.textContent;
+var pacientes = document.querySelectorAll(".paciente");
+for(var i = 0; i < pacientes.length; i++) {
+  var paciente = pacientes[i];
+   var tdPeso = paciente.querySelector(".info-peso");
+   var tdAltura = paciente.querySelector(".info-altura");
+   var tdImc = paciente.querySelector(".info-imc");
 
-var pesoEhValido = true;
-var alturaEhValida = true;
+   var peso = tdPeso.textContent;
+   var altura = tdAltura.textContent;
 
-if(peso <=0 || peso >= 1000) {
-   pesoEhValido = false;
-   tdPeso.textContent = "Peso inválido"
+   var alturaEhValida = true;
+   var pesoEhValido = true;
+
+   if (peso <= 0 || peso >= 1000) {
+     tdImc.textContent = "Peso inválido";
+     pesoEhValido = false;
+     paciente.classList.add("paciente-invalido");
+   }
+
+   if (altura <= 0 || altura >= 3) {
+     tdImc.textContent = "Altura inválida";
+     alturaEhValida = false;
+     paciente.classList.add("paciente-invalido");
+   }
+
+   if (pesoEhValido && alturaEhValida) {
+     var imc = peso / (altura * altura);
+    tdImc.textContent = imc.toFixed(2);
+  }
 }
 
-if(altura <= 0 || altura >= 3.00) {
-  alturaEhValida = false;
-  tdAltura.textContent = "Altura inválida"
-}
+var botaoAdicionar = document.querySelector("#adicionar-paciente");
 
-if(pesoEhValido && alturaEhValida) {
-   var imc = peso / ( altura * altura);
-   tdImc.textContent = imc;
-} else {
-    tdImc.textContent = "Altura e/ou peso inválidos!"
-}
+botaoAdicionar.addEventListener("click", function(event) {
+  event.preventDefault();
+  var form = document.querySelector("#form-adiciona");
+  var nome = form.nome.value;
+  var peso = form.peso.value;
+  var altura = form.altura.value;
+  var gordura = form.gordura.value;
+  var pacienteTr = document.createElement("tr");
+  pacienteTr.classList.add("paciente");
+
+  var nomeTd = document.createElement("td");
+  var pesoTd = document.createElement("td");
+  var alturaTd = document.createElement("td");
+  var gorduraTd = document.createElement("td");
+  var imcTd = document.createElement("td");
+  nomeTd.textContent = nome;
+  pesoTd.textContent = peso;
+  alturaTd.textContent = altura;
+  gorduraTd.textContent = gordura;
+  pacienteTr.appendChild(nomeTd);
+  pacienteTr.appendChild(pesoTd);
+  pacienteTr.appendChild(alturaTd);
+  pacienteTr.appendChild(gorduraTd);
+  pacienteTr.appendChild(imcTd);
+  var tabela = document.querySelector("#tabela-pacientes");
+  tabela.appendChild(pacienteTr);
+});
